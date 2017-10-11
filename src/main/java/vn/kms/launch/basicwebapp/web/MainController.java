@@ -52,7 +52,7 @@ public class MainController extends HttpServlet {
         if (controller != null && methodName != null) {
             controller.executeMethod(methodName, req, resp);
         } else {
-            RequestDispatcher dispatcher = req.getRequestDispatcher("/error.jsp");
+            RequestDispatcher dispatcher = req.getRequestDispatcher("/error.html");
             dispatcher.forward(req, resp);
         }
     }
