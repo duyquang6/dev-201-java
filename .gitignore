@@ -4,3 +4,4 @@
 target/
 /rsa_key
 /rsa_key.pub
+.idea/
