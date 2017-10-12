@@ -35,7 +35,7 @@ public class LoginFilter implements Filter {
         requestURI = requestURI.substring(requestURI.indexOf(contextPath) + contextPath.length());
 
         // TODO read the white-list from app-config
-        if (requestURI.equals("/index.jsp") || requestURI.equals("/error.jsp")) {
+        if (requestURI.equals("/index.html") || requestURI.equals("/error.html")) {
             chain.doFilter(req, resp);
         } else {
             //TODO update authentication method
@@ -43,7 +43,7 @@ public class LoginFilter implements Filter {
             if (authenticated) {
                 chain.doFilter(req, resp);
             } else {
-                RequestDispatcher dispatcher = req.getRequestDispatcher("/error.jsp");
+                RequestDispatcher dispatcher = req.getRequestDispatcher("/error.html");
                 dispatcher.forward(req, resp);
             }
         }
