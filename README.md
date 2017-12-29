@@ -1,7 +1,5 @@
-## Overview
-This is a Java code quality training material.
-
-This is a simple Master Data Management. You are a service provider to provide the service to validate data from clients and send statistic reports to state governments.
+# Requirements
+You will be asked to build a simple command-line application that will manipulate data in plain-text files. You are a service provider to provide the service to validate data from clients and send statistic reports to state governments.
 
 Application will process data with below requirements:
 
@@ -123,16 +121,19 @@ Adult	20-45
 Middle Age	46-60
 Senior	>60
 ```
-### Grading table
-| Item |                              Definition                              | Grade | Note                         |
-|------|----------------------------------------------------------------------|-------|------------------------------|
-|    1 | Reading ‘Clean Code’ book (2 random questions)                       |    15 |                              |
-|    2 | Applying KMS Java Coding Standards                                   |    10 |                              |
-|    3 | Descriptive names, comments                                          |    10 |                              |
-|    4 | Error handlings                                                      |    10 |                              |
-|    5 | Unit-testing  (80% coverage, upload the Code Coverage screenshoot)   |    20 |(-10 if there is no unit test)|
-|    6 | Can fix the percentage bug                                           |    5  |                              |
-|    7 | Applying OO Principles (SOLID, DRY…), Design Patterns                |    15 |                              |
-|    8 | Java techniques (Reflection, Annotation, Java 8 Stream API, Lambda…) |    15 |                              |
-|    9 | Performance Improvement (bonus)                                      |    10 |                              |
-|      | Total Score                                                          |   110 |                              |
+
+# Source Code
+### Pre-requisites
+- JDK 1.8 or later
+- Maven
+
+### Build
+```
+mvn clean package
+```
+
+### Run
+```
+cd target
+java -jar <jar-file>.jar
+```
