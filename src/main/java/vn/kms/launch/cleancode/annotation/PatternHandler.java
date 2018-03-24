@@ -8,7 +8,7 @@ public class PatternHandler implements RequiredHandler<Pattern, String> {
 
     @Override
     public void init(Pattern pattern) {
-        patternToValidate = pattern.value();
+        patternToValidate = pattern.value(); 
     }
 
     @Override

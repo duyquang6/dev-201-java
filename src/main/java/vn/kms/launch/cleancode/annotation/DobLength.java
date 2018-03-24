@@ -9,5 +9,5 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 public @interface DobLength {
     boolean value() default true;
-    String message() default "Date of birth length is 10.";
+    String message() default "Date of birth length is 10."; 
 }

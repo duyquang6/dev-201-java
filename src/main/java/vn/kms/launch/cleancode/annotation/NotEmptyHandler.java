@@ -11,7 +11,7 @@ public class NotEmptyHandler implements RequiredHandler<NotEmpty, String> {
 
     @Override
     public boolean isValid(String valueToValidate) {
-        if (valueToValidate.trim().length() != 0)//not empty
+        if (valueToValidate.trim().length() != 0)//not empty 
             return true;
         return false;
     }

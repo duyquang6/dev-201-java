@@ -14,5 +14,5 @@ import java.lang.annotation.Target;
 @Inherited
 public @interface ValidLength {
     int value() default 255;
-    String message() default "Field length is not over expected length.";
+    String message() default "Field length is not over expected length."; 
 }

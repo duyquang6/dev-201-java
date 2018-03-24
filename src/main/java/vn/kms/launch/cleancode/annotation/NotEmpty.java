@@ -10,5 +10,5 @@ import java.lang.annotation.*;
 @Inherited
 public @interface NotEmpty {
     boolean value() default true;
-    String message() default "Do not leave field empty.";
+    String message() default "Do not leave field empty."; 
 }

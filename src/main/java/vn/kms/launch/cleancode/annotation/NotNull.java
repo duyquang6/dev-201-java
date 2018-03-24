@@ -10,5 +10,5 @@ import java.lang.annotation.*;
 @Inherited
 public @interface NotNull {
     boolean value() default true;
-    String message() default "Date of birth is not null";
+    String message() default "Date of birth is not null.";
 }

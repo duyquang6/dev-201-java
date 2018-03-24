@@ -15,7 +15,7 @@ public class ValidStateCodesHandler extends CommonVariables implements RequiredH
 
     @Override
     public boolean isValid(String valueToValidate) {
-        if (VALID_STATE_CODES.contains(stateCodesToValid))//state code is exist
+        if (VALID_STATE_CODES.contains(stateCodesToValid))//state code is exist 
             return true;
         return false;
     }

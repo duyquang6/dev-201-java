@@ -15,7 +15,7 @@ public class ValidLengthHandler implements RequiredHandler<ValidLength, String> 
     @Override
     public boolean isValid(String valueToValidate) {
         if (valueToValidate.length() <= maxLength)
-            return true;
+            return true; 
         return false;
     }
 }

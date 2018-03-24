@@ -10,5 +10,5 @@ import java.lang.annotation.*;
 @Inherited
 public @interface ValidStateCodes {
     String value() default "";
-    String message() default "State codes is incorrect.";
+    String message() default "State codes is incorrect."; 
 }
