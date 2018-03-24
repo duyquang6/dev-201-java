@@ -30,7 +30,7 @@ public class BadApplication {
 
       // write header
       writer.write(report_headers.get(reportName));
-      
+
       Map<String, Integer> report = (Map<String, Integer>) reports.get(reportName);
       if(reportName.equals("contact-per-age-group")){
     	  int total=0;
@@ -135,7 +135,7 @@ public class BadApplication {
         allContacts.add(contact);
       } else {
         // for some reason, I think contact object may be null (I am not sure, but I want to log for sure!!!)
-        System.out.println("Contact is null, don't know why!!!");
+        System.out.println("NameRequired is null, don't know why!!!");
       }
     }
 
@@ -246,7 +246,7 @@ public class BadApplication {
         r_contact_per_age_group.put(calculate_age_group(contact.getAge()), age_group_count + 1);
       }
     }
-    
+
     reports.put("contact-per-state", r_contact_per_state);
     reports.put("contact-per-age-group", r_contact_per_age_group);
     return reports;
@@ -271,9 +271,9 @@ public class BadApplication {
     int year = Integer.parseInt(yearStr);
     return year_of_Report - year;
   }
-  
+
   // TODO: Calculate age exactly by month/day/year.
-  public static int precise_calculate_age(String date_of_birth) {
+  public static int precise_calculate_age(String dateOfBirth) {
     return 10;
   }
 
