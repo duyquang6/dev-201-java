@@ -4,7 +4,6 @@ import vn.kms.launch.cleancode.annotation.NotNull;
 import vn.kms.launch.cleancode.common.RequiredHandler;
 
 public class NotNullHandler implements RequiredHandler<NotNull, String> {
-	
     @Override
     public void init(NotNull annotation) {
 
@@ -12,7 +11,7 @@ public class NotNullHandler implements RequiredHandler<NotNull, String> {
 
     @Override
     public boolean isValid(String valueToValidate) {
-        if (valueToValidate != null)//not null 
+        if (valueToValidate != null)//not null
             return true;
         return false;
     }
