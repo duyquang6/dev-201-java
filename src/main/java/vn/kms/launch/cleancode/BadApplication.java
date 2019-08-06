@@ -24,7 +24,7 @@ public class BadApplication {
 		Map<Integer, Map<String, String>> invalidContacts = new LinkedHashMap<>(); // invalidContacts order by ID
 		Map reports = loadFileAndConvertToEntityAndValidateEntityAndStoreEntityAndReturnReports(fieldErrorCounts,
 				invalidContacts);
-
+		System.out.println(reportHeaders.keySet());
 		// 5. Store reports
 		for (Object object : reportHeaders.keySet()) {
 			String reportName = (String) object;
