@@ -1,15 +1,23 @@
 package vn.kms.launch.cleancode;
 
 public class Address {
+    @Column(header = "address")
     private String houseNumberAndStreet;
+
+    @Column(header = "city")
     private String city;
+
+    @Column(header = "state")
     private String state;
+
+    @Column(header = "zip")
     private String zipCode;
 
     public String getHouseNumberAndStreet() {
         return houseNumberAndStreet;
     }
 
+    @Column(header = "address")
     public void setHouseNumberAndStreet(String houseNumberAndStreet) {
         this.houseNumberAndStreet = houseNumberAndStreet;
     }
@@ -18,6 +26,7 @@ public class Address {
         return city;
     }
 
+    @Column(header = "city")
     public void setCity(String city) {
         this.city = city;
     }
@@ -26,6 +35,7 @@ public class Address {
         return state;
     }
 
+    @Column(header = "state")
     public void setState(String state) {
         this.state = state;
     }
@@ -34,6 +44,7 @@ public class Address {
         return zipCode;
     }
 
+    @Column(header = "zip")
     public void setZipCode(String zipCode) {
         this.zipCode = zipCode;
     }
