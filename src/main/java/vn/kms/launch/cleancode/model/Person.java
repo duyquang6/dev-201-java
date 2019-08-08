@@ -1,15 +1,25 @@
-package vn.kms.launch.cleancode;
+package vn.kms.launch.cleancode.model;
+
+import vn.kms.launch.cleancode.annotation.Column;
+import vn.kms.launch.cleancode.annotation.Header;
+import vn.kms.launch.cleancode.annotation.validator.LengthEqual;
+import vn.kms.launch.cleancode.annotation.validator.MaxLength;
+import vn.kms.launch.cleancode.annotation.validator.NotEmpty;
+import vn.kms.launch.cleancode.annotation.validator.NotNull;
 
 public class Person {
-    @Column(header = "first_name")
+    @Header(value = "first_name")
+    @NotEmpty
+    @MaxLength(length = 10)
     private String firstName;
-
-    @Column(header = "last_name")
+    @Header(value = "last_name")
+    @NotEmpty
+    @MaxLength(length = 10)
     private String lastName;
-
-    @Column(header = "date_of_birth")
+    @Header(value = "date_of_birth")
+    @LengthEqual(length = 10)
+    @NotNull
     private String dayOfBirth;
-
     private int age;
 
     public String getFirstName() {
@@ -45,6 +55,12 @@ public class Person {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public void calculateAgeByYear(int yearOfReport) {
+        String yearStr = dayOfBirth.split("/")[2];
+        int year = Integer.parseInt(yearStr);
+        age = yearOfReport - year;
     }
 
     public String toString() {

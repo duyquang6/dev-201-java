@@ -1,16 +1,26 @@
-package vn.kms.launch.cleancode;
+package vn.kms.launch.cleancode.model;
+
+import vn.kms.launch.cleancode.annotation.Column;
+import vn.kms.launch.cleancode.annotation.Header;
+import vn.kms.launch.cleancode.annotation.validator.MaxLength;
+import vn.kms.launch.cleancode.annotation.validator.StateCodeValid;
+import vn.kms.launch.cleancode.annotation.validator.ZipCodeValid;
 
 public class Address {
-    @Column(header = "address")
+    @Header(value = "address")
+    @MaxLength(length = 20)
     private String houseNumberAndStreet;
 
-    @Column(header = "city")
+    @Header(value = "city")
+    @MaxLength(length = 15)
     private String city;
 
-    @Column(header = "state")
+    @Header(value = "state")
+    @StateCodeValid
     private String state;
 
-    @Column(header = "zip")
+    @Header(value = "zip")
+    @ZipCodeValid
     private String zipCode;
 
     public String getHouseNumberAndStreet() {
