@@ -9,7 +9,7 @@ import java.lang.reflect.Field;
 public class LengthEqualValidator extends Validator {
     private int lengthRequired;
 
-    protected LengthEqualValidator(Object objectToValidate) {
+    public LengthEqualValidator(Object objectToValidate) {
         super(objectToValidate);
     }
 
@@ -21,6 +21,6 @@ public class LengthEqualValidator extends Validator {
 
     @Override
     public String getErrorMsg(String fieldValue) {
-        return String.format("'%s' not equal %d",fieldValue,lengthRequired);
+        return String.format("'%s' not equal %d", fieldValue, lengthRequired);
     }
 }

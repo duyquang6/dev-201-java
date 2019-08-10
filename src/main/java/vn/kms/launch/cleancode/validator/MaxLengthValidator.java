@@ -9,7 +9,7 @@ import java.lang.reflect.Field;
 public class MaxLengthValidator extends Validator {
     private int maxLength;
 
-    protected MaxLengthValidator(Object objectToValidate) {
+    public MaxLengthValidator(Object objectToValidate) {
         super(objectToValidate);
     }
 
@@ -21,6 +21,6 @@ public class MaxLengthValidator extends Validator {
 
     @Override
     public String getErrorMsg(String fieldValue) {
-        return String.format("'%s''s length is over %d",fieldValue.trim(),maxLength);
+        return String.format("'%s''s length is over %d", fieldValue.trim(), maxLength);
     }
 }

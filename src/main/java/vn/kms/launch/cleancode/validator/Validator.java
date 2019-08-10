@@ -7,7 +7,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.Map;
 
-import static vn.kms.launch.cleancode.Util.addFieldERROR;
+import static vn.kms.launch.cleancode.utils.Other.addFieldERROR;
 
 public abstract class Validator {
     private Object objectToValidate;
@@ -16,16 +16,18 @@ public abstract class Validator {
         this.objectToValidate = objectToValidate;
     }
 
-    public void validate(Map<String, String> errors, Map<String, Integer> fieldErrorCounts) throws IllegalAccessException {
+    public void validateAndExportToVariable(Map<String, String> errors, Map<String, Integer> fieldErrorCounts) throws IllegalAccessException {
         for (Field field : objectToValidate.getClass().getDeclaredFields()) {
             field.setAccessible(true);
             Annotation annotation = field.getAnnotation(this.getClass().getAnnotation(ValidatorAnnotation.class).type());
             if (annotation != null) {
                 String headerValue = field.getAnnotation(Header.class).value();
                 String fieldValue = field.get(objectToValidate).toString();
-                if (!isValid(field,objectToValidate)) {
+                if (!isValid(field, objectToValidate)) {
                     errors.put(field.getName(), getErrorMsg(fieldValue));
-                    addFieldERROR(fieldErrorCounts, headerValue);
+                    if (fieldErrorCounts != null) {
+                        addFieldERROR(fieldErrorCounts, headerValue);
+                    }
                 }
             }
         }

@@ -8,7 +8,7 @@ import java.lang.reflect.Field;
 @ValidatorAnnotation(type = PhoneNumberValid.class)
 public class PhoneNumberValidator extends Validator {
 
-    protected PhoneNumberValidator(Object objectToValidate) {
+    public PhoneNumberValidator(Object objectToValidate) {
         super(objectToValidate);
     }
 

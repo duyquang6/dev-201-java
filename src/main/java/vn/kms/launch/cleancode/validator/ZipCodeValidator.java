@@ -8,7 +8,7 @@ import java.lang.reflect.Field;
 @ValidatorAnnotation(type = ZipCodeValid.class)
 public class ZipCodeValidator extends Validator {
 
-    protected ZipCodeValidator(Object objectToValidate) {
+    public ZipCodeValidator(Object objectToValidate) {
         super(objectToValidate);
     }
 

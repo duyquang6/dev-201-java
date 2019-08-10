@@ -9,6 +9,5 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 public @interface Column {
     String header();
-
     String type() default "STRING";
 }

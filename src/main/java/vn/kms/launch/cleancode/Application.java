@@ -1,27 +1,32 @@
+// Copyright (c) 2019 KMS Technology, Inc.
 package vn.kms.launch.cleancode;
 
 import vn.kms.launch.cleancode.doctype.*;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.Writer;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
 
-import static vn.kms.launch.cleancode.Util.*;
+import static vn.kms.launch.cleancode.utils.ExportingDocument.exportFile;
+
+/**
+ * A demo application for analyzing,
+ * validating contacts data and exporting result documents
+ *
+ * @author trungnguyen
+ */
 
 public class Application {
-    private static final List<Class> REPORT_TYPES = Arrays.asList(
+    private static final List<Class> DOCUMENT_TYPES = Arrays.asList(
             InvalidContactDetails.class,
             InvalidContactSummary.class,
             ContactPerState.class,
-            ContactPerAgeGroup.class
+            ContactPerAgeGroup.class,
+            ValidContacts.class
     );
 
     public static void main(String[] args) throws Exception {
         Analysis analysis = new Analysis();
-        analysis.setReportTypes(REPORT_TYPES);
+        analysis.setDocTypes(DOCUMENT_TYPES);
         analysis.analyzeData("data/contacts.tsv");
         exportFile(analysis);
     }

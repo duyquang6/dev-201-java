@@ -8,7 +8,7 @@ import java.lang.reflect.Field;
 @ValidatorAnnotation(type = EmailValid.class)
 public class EmailValidator extends Validator {
 
-    protected EmailValidator(Object objectToValidate) {
+    public EmailValidator(Object objectToValidate) {
         super(objectToValidate);
     }
 
@@ -19,7 +19,7 @@ public class EmailValidator extends Validator {
 
     @Override
     public String getErrorMsg(String email) {
-        return String.format("'%s' is invalid email format",email);
+        return String.format("'%s' is invalid email format", email);
     }
 
 

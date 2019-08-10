@@ -3,13 +3,13 @@ package vn.kms.launch.cleancode.model;
 import vn.kms.launch.cleancode.annotation.Column;
 import vn.kms.launch.cleancode.annotation.Header;
 import vn.kms.launch.cleancode.annotation.validator.EmailValid;
-import vn.kms.launch.cleancode.validator.FieldValidation;
 import vn.kms.launch.cleancode.annotation.validator.PhoneNumberValid;
+import vn.kms.launch.cleancode.validator.FieldValidation;
 
 import java.util.Map;
 
-import static vn.kms.launch.cleancode.Util.mapDataToObject;
-import static vn.kms.launch.cleancode.Util.tryGetIntWithDefault;
+import static vn.kms.launch.cleancode.utils.Other.mapDataToObject;
+import static vn.kms.launch.cleancode.utils.Other.tryGetIntWithDefault;
 
 public class Contact implements Comparable<Contact> {
     @Header(value = "id")
@@ -28,7 +28,6 @@ public class Contact implements Comparable<Contact> {
         super();
         this.person = new Person();
         this.address = new Address();
-        this.fieldValidation = new FieldValidation();
     }
 
     public int getId() {
@@ -77,16 +76,24 @@ public class Contact implements Comparable<Contact> {
     }
 
     public FieldValidation validate(Map<String, Integer> fieldErrorCounts) throws IllegalAccessException {
-        fieldValidation.validateObject(this.getPerson(),fieldErrorCounts);
-        fieldValidation.validateObject(this.getAddress(),fieldErrorCounts);
-        fieldValidation.validateObject(this,fieldErrorCounts);
+        this.fieldValidation = new FieldValidation();
+        fieldValidation.validateObject(this.getPerson(), fieldErrorCounts);
+        fieldValidation.validateObject(this.getAddress(), fieldErrorCounts);
+        fieldValidation.validateObject(this, fieldErrorCounts);
         return fieldValidation;
+    }
+
+    public boolean isValid() throws IllegalAccessException {
+        if (fieldValidation == null) {
+            this.validate(null);
+        }
+        return fieldValidation.getErrors().isEmpty();
     }
 
     @Override
     public int compareTo(Contact that) {
-        Integer thisZipCode = tryGetIntWithDefault(this.address.getZipCode(),0) ;
-        Integer thatZipCode = tryGetIntWithDefault(that.address.getZipCode(),0) ;
+        Integer thisZipCode = tryGetIntWithDefault(this.address.getZipCode(), 0);
+        Integer thatZipCode = tryGetIntWithDefault(that.address.getZipCode(), 0);
         return thisZipCode.compareTo(thatZipCode);
     }
 }

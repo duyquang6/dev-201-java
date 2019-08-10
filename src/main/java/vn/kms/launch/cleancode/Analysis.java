@@ -1,31 +1,38 @@
+// Copyright (c) 2019 KMS Technology, Inc.
 package vn.kms.launch.cleancode;
 
-import vn.kms.launch.cleancode.model.Address;
+import vn.kms.launch.cleancode.doctype.ContactPerAgeGroup;
+import vn.kms.launch.cleancode.doctype.ContactPerState;
 import vn.kms.launch.cleancode.model.Contact;
-import vn.kms.launch.cleancode.model.Person;
 import vn.kms.launch.cleancode.validator.FieldValidation;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Writer;
 import java.util.*;
 
-import static vn.kms.launch.cleancode.Util.*;
+import static vn.kms.launch.cleancode.utils.AgeCalculation.convertAgeToGroup;
+import static vn.kms.launch.cleancode.utils.ExtractingDocumentInformation.getDocumentName;
+import static vn.kms.launch.cleancode.utils.FileHandler.loadFileData;
+import static vn.kms.launch.cleancode.utils.HeaderHandler.findHeaderIndexsByFieldNames;
+import static vn.kms.launch.cleancode.utils.RowValidation.isRowDataInvalid;
+
+/**
+ * Analyzing source data and exporting to result
+ *
+ * @author quangnguyen
+ */
 
 public class Analysis {
-    private static final int MAX_COLUMN = 14;
-    private static final int YEAR_OF_REPORT = 2016;
     private Map<Integer, Map<String, String>> invalidContacts;
     private Map reports;
-    private List<Class> reportTypes;
-    private FieldValidation fieldValidationResult;
+    private List<Class> docTypes;
     private Map<String, Integer> fieldErrorCounts;
+    private List<Contact> allContacts;
 
     public Analysis() {
         invalidContacts = new LinkedHashMap<>();
         reports = new HashMap<>();
         fieldErrorCounts = new TreeMap<>();
+        allContacts = new ArrayList<>();
     }
 
     public Map<Integer, Map<String, String>> getInvalidContacts() {
@@ -36,63 +43,37 @@ public class Analysis {
         return reports;
     }
 
-    public List<Class> getReportTypes() {
-        return reportTypes;
+    public List<Class> getDocTypes() {
+        return docTypes;
     }
 
-    public void setReportTypes(List<Class> reportTypes) {
-        this.reportTypes = reportTypes;
+    public void setDocTypes(List<Class> docTypes) {
+        this.docTypes = docTypes;
     }
 
     public Map<String, Integer> getFieldErrorCounts() {
         return fieldErrorCounts;
     }
 
-    public FieldValidation getFieldValidationResult() {
-        return fieldValidationResult;
+    public List<Contact> getAllContacts() {
+        return allContacts;
     }
 
-    private boolean isCurrentRowHeader(int rowIndex) {
-        return rowIndex == 0;
-    }
-
-    private boolean isRowBlank(String line) {
-        int countCharInLine = line.trim().length();
-        return countCharInLine == 0;
-    }
-
-    private boolean isContainBlankField(String[] dataColumns) {
-        return dataColumns.length != MAX_COLUMN;
-    }
-
-    private boolean isRowDataInvalid(int rowIndex, String line) {
-        String[] dataColumns = line.split("\t");
-        return isCurrentRowHeader(rowIndex) ||
-                isRowBlank(line) ||
-                isContainBlankField(dataColumns);
-    }
-
-    private void insertContact(Contact contact, List<Contact> allContacts) {
+    private void insertContact(Contact contact) {
         if (contact != null) {
             allContacts.add(contact);
-        } else {
-            // for some reason, I think contact object may be null (I am not sure, but I
-            // want to log for sure!!!)
-            System.out.println("Contact is null, don't know why!!!");
         }
     }
 
     /**
-     * @return array of total-lines, blank-lines, invalid-lines, valid-entities,
-     * invalid-entities, total-errors
-     * loadFileAndConvertToEntityAndValidateEntityAndStoreEntityAndReturnReports
+     * @return All contacts, Invalid contacts, Error fields and report about categorizing
      */
     public void analyzeData(String dataPath) throws IOException, IllegalAccessException {
+        // 1. Load data from file
         String payLoad = loadFileData(dataPath);
         String[] lines = payLoad.split("\r\n"); // get all lines
-        List<Contact> allContacts = new ArrayList<>();
-        Map<String, Integer> headerIndexByFieldName = findIndexsByFieldNames(lines[0]);
-
+        Map<String, Integer> headerIndexByFieldName = findHeaderIndexsByFieldNames(lines[0]);
+        // 2. Basic row validation and map data to contact entities
         for (int currentRowIndex = 0; currentRowIndex < lines.length; currentRowIndex++) {
             String line = lines[currentRowIndex];
             if (isRowDataInvalid(currentRowIndex, line)) {
@@ -101,55 +82,34 @@ public class Analysis {
             String[] dataColumns = line.split("\t");
             Contact contact = new Contact();
             contact.loadDataToEntity(headerIndexByFieldName, dataColumns);
-            insertContact(contact, allContacts);
+            insertContact(contact);
         }
-
-        // 2. Validate contact data
-        validateContactData(allContacts);
-        // 3. Sort contact by zipcode
+        // 3. Validate contact data
+        validateContactDataAndPopOtherField();
+        // 4. Sort contact by zipcode and get report about categorizing contact
         Collections.sort(allContacts);
-
-        exportValidDataToFile(allContacts);
-        genContactByStateAndByAgeGroup(allContacts);
+        categorizeContactByState();
+        categorizeContactByAgeGroup();
     }
 
-    private void validateContactData(List<Contact> allContacts) throws IllegalAccessException {
+    private void validateContactDataAndPopOtherField() throws IllegalAccessException {
         for (Contact contact : allContacts) {
-            fieldValidationResult = contact.validate(fieldErrorCounts);
+            // Contact validate data fields
+            FieldValidation fieldValidationResult = contact.validate(fieldErrorCounts);
             if (!fieldValidationResult.getErrors().isEmpty()) {
                 invalidContacts.put(contact.getId(), fieldValidationResult.getErrors());
             } else {
                 // populate other fields from raw fields
-                contact.getPerson().calculateAgeByYear(YEAR_OF_REPORT);
+                contact.getPerson().setAge();
             }
         }
     }
 
-    private void exportValidDataToFile(List<Contact> allContacts) {
-        File outputFile = new File("output");
-        if (!outputFile.exists()) {
-            outputFile.mkdirs();
-        }
-
-        try (Writer writer = new FileWriter(new File(outputFile, "valid-contacts.tab"))) {
-            // write header
-            writer.write(
-                    "id\tfirst_name\tlast_name\tday_of_birth\taddress\tcity\tstate\tzip_code\tmobile_phone\temail\r\n");
-            for (Contact contact : allContacts) {
-                if (!invalidContacts.containsKey(contact.getId())) {
-                    writer.write(contact.toString() + "\r\n");
-                }
-            }
-            writer.flush();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void genContactByStateAndByAgeGroup(List<Contact> allContacts) {
-        reports = new HashMap<>();
+    /**
+     * Categorizing contact by state code and put to report
+     */
+    private void categorizeContactByState() {
         Map<String, Integer> contactsByStates = new HashMap<>();
-        Map<String, Integer> contactsByAgeGroups = new HashMap<>();
         for (Contact contact : allContacts) {
             if (!invalidContacts.containsKey(contact.getId())) {
                 int stateCount = 0;
@@ -157,7 +117,16 @@ public class Analysis {
                     stateCount = contactsByStates.get(contact.getAddress().getState());
                 }
                 contactsByStates.put(contact.getAddress().getState(), stateCount + 1);
+            }
+        }
+        reports.put(getDocumentName(ContactPerState.class), contactsByStates);
+    }
 
+    // same as categorizeContactByState
+    private void categorizeContactByAgeGroup() {
+        Map<String, Integer> contactsByAgeGroups = new HashMap<>();
+        for (Contact contact : allContacts) {
+            if (!invalidContacts.containsKey(contact.getId())) {
                 int ageGroupCount = 0;
                 if (contactsByAgeGroups.containsKey(convertAgeToGroup(contact.getPerson().getAge()))) {
                     ageGroupCount = contactsByAgeGroups.get(convertAgeToGroup(contact.getPerson().getAge()));
@@ -165,30 +134,6 @@ public class Analysis {
                 contactsByAgeGroups.put(convertAgeToGroup(contact.getPerson().getAge()), ageGroupCount + 1);
             }
         }
-        reports.put("contact-per-state", contactsByStates);
-        reports.put("contact-per-age-group", contactsByAgeGroups);
-    }
-
-    private Map<String, Integer> findIndexsByFieldNames(String headerLine) {
-        ArrayList<String> contactHeaders = getColumnHeaders(Contact.class);
-        ArrayList<String> personHeaders = getColumnHeaders(Person.class);
-        ArrayList<String> addressHeaders = getColumnHeaders(Address.class);
-
-        ArrayList<String> headers = new ArrayList<>();
-        headers.addAll(contactHeaders);
-        headers.addAll(personHeaders);
-        headers.addAll(addressHeaders);
-
-        Map<String, Integer> headerIndexByFieldName = new HashMap<>();
-        for (String header : headers) {
-            int headerIndex = findHeaderIndex(headerLine, header);
-            headerIndexByFieldName.put(header, headerIndex);
-        }
-        return headerIndexByFieldName;
-    }
-
-    private int findHeaderIndex(String line, String header) {
-        String[] headers = line.split("\t");
-        return Arrays.asList(headers).indexOf(header);
+        reports.put(getDocumentName(ContactPerAgeGroup.class), contactsByAgeGroups);
     }
 }

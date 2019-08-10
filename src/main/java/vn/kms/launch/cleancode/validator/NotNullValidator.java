@@ -8,7 +8,7 @@ import java.lang.reflect.Field;
 @ValidatorAnnotation(type = NotNull.class)
 public class NotNullValidator extends Validator {
 
-    protected NotNullValidator(Object objectToValidate) {
+    public NotNullValidator(Object objectToValidate) {
         super(objectToValidate);
     }
 

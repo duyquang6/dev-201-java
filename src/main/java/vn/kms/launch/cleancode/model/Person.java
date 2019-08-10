@@ -7,6 +7,8 @@ import vn.kms.launch.cleancode.annotation.validator.MaxLength;
 import vn.kms.launch.cleancode.annotation.validator.NotEmpty;
 import vn.kms.launch.cleancode.annotation.validator.NotNull;
 
+import static vn.kms.launch.cleancode.utils.AgeCalculation.preciseCalculateAge;
+
 public class Person {
     @Header(value = "first_name")
     @NotEmpty
@@ -19,7 +21,7 @@ public class Person {
     @Header(value = "date_of_birth")
     @LengthEqual(length = 10)
     @NotNull
-    private String dayOfBirth;
+    private String dateOfBirth;
     private int age;
 
     public String getFirstName() {
@@ -40,30 +42,24 @@ public class Person {
         this.lastName = lastName;
     }
 
-    public String getDayOfBirth() {
-        return dayOfBirth;
+    public String getDateOfBirth() {
+        return dateOfBirth;
     }
 
     @Column(header = "date_of_birth")
-    public void setDayOfBirth(String dayOfBirth) {
-        this.dayOfBirth = dayOfBirth;
+    public void setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
     public int getAge() {
         return age;
     }
 
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    public void calculateAgeByYear(int yearOfReport) {
-        String yearStr = dayOfBirth.split("/")[2];
-        int year = Integer.parseInt(yearStr);
-        age = yearOfReport - year;
+    public void setAge() {
+        this.age = preciseCalculateAge(dateOfBirth);
     }
 
     public String toString() {
-        return String.format("%s\t%s\t%s", firstName, lastName, dayOfBirth);
+        return String.format("%s\t%s\t%s", firstName, lastName, dateOfBirth);
     }
 }

@@ -1,16 +1,16 @@
 package vn.kms.launch.cleancode.doctype;
 
+import vn.kms.launch.cleancode.annotation.Document;
 import vn.kms.launch.cleancode.annotation.Header;
-import vn.kms.launch.cleancode.annotation.Report;
 
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Map;
 
-import static vn.kms.launch.cleancode.Util.getReportName;
+import static vn.kms.launch.cleancode.utils.ExtractingDocumentInformation.getDocumentName;
 
-@Report(reportName = "contact-per-age-group")
-public class ContactPerAgeGroup extends Document {
+@Document(reportName = "contact-per-age-group")
+public class ContactPerAgeGroup extends vn.kms.launch.cleancode.doctype.Document {
     private static ContactPerAgeGroup instance;
     @Header(value = "group")
     private String group;
@@ -31,10 +31,13 @@ public class ContactPerAgeGroup extends Document {
     @Override
     public void writeDoc(Writer writer) throws IOException {
         Map<String, Integer> report =
-                (Map<String, Integer>) getAnalysisResult().getReports().get(getReportName(this.getClass()));
+                (Map<String, Integer>) getAnalysisResult().getReports().get(getDocumentName(this.getClass()));
         int total = 0;
         for (Integer v : report.values()) {
             total += v;
+        }
+        if (total == 0) {
+            throw new ArithmeticException("total is zero, might be report is null");
         }
         // Sort by age-group followed the requirement
         String[] ageGroups = {"Children", "Adolescent", "Adult", "Middle Age", "Senior"};

@@ -8,7 +8,7 @@ import java.lang.reflect.Field;
 @ValidatorAnnotation(type = NotEmpty.class)
 public class NotEmptyValidator extends Validator {
 
-    protected NotEmptyValidator(Object objectToValidate) {
+    public NotEmptyValidator(Object objectToValidate) {
         super(objectToValidate);
     }
 

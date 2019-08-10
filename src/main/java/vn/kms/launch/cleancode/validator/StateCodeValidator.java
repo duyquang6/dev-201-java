@@ -16,7 +16,7 @@ public class StateCodeValidator extends Validator {
                     "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "MP", "OH", "OK", "OR", "PW", "PA", "PR", "RI",
                     "SC", "SD", "TN", "TX", "UT", "VT", "VA", "VI", "WA", "WV", "WI", "WY"));
 
-    protected StateCodeValidator(Object objectToValidate) {
+    public StateCodeValidator(Object objectToValidate) {
         super(objectToValidate);
     }
 

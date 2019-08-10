@@ -1,14 +1,14 @@
 package vn.kms.launch.cleancode.doctype;
 
+import vn.kms.launch.cleancode.annotation.Document;
 import vn.kms.launch.cleancode.annotation.Header;
-import vn.kms.launch.cleancode.annotation.Report;
 
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Map;
 
-@Report(reportName = "invalid-contact-summary")
-public class InvalidContactSummary extends Document {
+@Document(reportName = "invalid-contact-summary")
+public class InvalidContactSummary extends vn.kms.launch.cleancode.doctype.Document {
     private static InvalidContactSummary instance;
     @Header(value = "field_name")
     private String fieldName;

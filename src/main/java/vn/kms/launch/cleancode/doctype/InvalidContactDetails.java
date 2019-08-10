@@ -1,14 +1,14 @@
 package vn.kms.launch.cleancode.doctype;
 
+import vn.kms.launch.cleancode.annotation.Document;
 import vn.kms.launch.cleancode.annotation.Header;
-import vn.kms.launch.cleancode.annotation.Report;
 
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Map;
 
-@Report(reportName = "invalid-contact-details")
-public class InvalidContactDetails extends Document{
+@Document(reportName = "invalid-contact-details")
+public class InvalidContactDetails extends vn.kms.launch.cleancode.doctype.Document {
     private static InvalidContactDetails instance;
 
     @Header(value = "contact_id")
@@ -30,11 +30,11 @@ public class InvalidContactDetails extends Document{
     @Override
     public void writeDoc(Writer writer) throws IOException {
         for (Map.Entry<Integer, Map<String, String>> invalidContactEntry : getAnalysisResult().getInvalidContacts().entrySet()) {
-            int contactID = invalidContactEntry.getKey();
+            int theContactID = invalidContactEntry.getKey();
             Map<String, String> errorByFields = invalidContactEntry.getValue();
             for (Map.Entry<String, String> errorEntry : errorByFields.entrySet()) {
                 String fieldName = errorEntry.getKey();
-                writer.write(contactID + "\t" + fieldName + "\t" + errorByFields.get(fieldName) + "\r\n");
+                writer.write(theContactID + "\t" + fieldName + "\t" + errorByFields.get(fieldName) + "\r\n");
             }
         }
     }
