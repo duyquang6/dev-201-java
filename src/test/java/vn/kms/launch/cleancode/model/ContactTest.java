@@ -3,8 +3,6 @@ package vn.kms.launch.cleancode.model;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 public class ContactTest {
 
     @Before

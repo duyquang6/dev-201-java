@@ -3,8 +3,6 @@ package vn.kms.launch.cleancode.model;
 import junit.framework.TestCase;
 import org.junit.Before;
 
-import static org.junit.Assert.*;
-
 public class PersonTest extends TestCase {
     private Person person;
 

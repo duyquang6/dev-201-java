@@ -14,9 +14,9 @@ public class MaxLengthValidator extends Validator {
     }
 
     @Override
-    public boolean isValid(Field field, Object objectToValidate) throws IllegalAccessException {
+    public boolean isValid(Field field) throws IllegalAccessException {
         maxLength = field.getAnnotation(MaxLength.class).length();
-        return field.get(objectToValidate).toString().length() <= maxLength;
+        return field.get(getObjectToValidate()).toString().length() <= maxLength;
     }
 
     @Override

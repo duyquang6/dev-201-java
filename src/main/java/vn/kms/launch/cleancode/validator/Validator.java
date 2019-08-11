@@ -23,7 +23,7 @@ public abstract class Validator {
             if (annotation != null) {
                 String headerValue = field.getAnnotation(Header.class).value();
                 String fieldValue = field.get(objectToValidate).toString();
-                if (!isValid(field, objectToValidate)) {
+                if (!isValid(field)) {
                     errors.put(field.getName(), getErrorMsg(fieldValue));
                     if (fieldErrorCounts != null) {
                         addFieldERROR(fieldErrorCounts, headerValue);
@@ -33,7 +33,11 @@ public abstract class Validator {
         }
     }
 
-    public abstract boolean isValid(Field field, Object objectToValidate) throws IllegalAccessException;
+    public Object getObjectToValidate() {
+        return objectToValidate;
+    }
+
+    public abstract boolean isValid(Field field) throws IllegalAccessException;
 
     public abstract String getErrorMsg(String value);
 }

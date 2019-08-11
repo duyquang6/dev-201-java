@@ -21,8 +21,8 @@ public class StateCodeValidator extends Validator {
     }
 
     @Override
-    public boolean isValid(Field field, Object objectToValidate) throws IllegalAccessException {
-        return mValidStateCodes.contains(field.get(objectToValidate).toString());
+    public boolean isValid(Field field) throws IllegalAccessException {
+        return mValidStateCodes.contains(field.get(getObjectToValidate()).toString());
     }
 
     @Override

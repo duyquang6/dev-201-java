@@ -14,9 +14,9 @@ public class LengthEqualValidator extends Validator {
     }
 
     @Override
-    public boolean isValid(Field field, Object objectToValidate) throws IllegalAccessException {
+    public boolean isValid(Field field) throws IllegalAccessException {
         lengthRequired = field.getAnnotation(LengthEqual.class).length();
-        return field.get(objectToValidate).toString().length() == lengthRequired;
+        return field.get(getObjectToValidate()).toString().length() == lengthRequired;
     }
 
     @Override
