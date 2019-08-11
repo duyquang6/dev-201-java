@@ -6,7 +6,7 @@ import vn.kms.launch.cleancode.model.Person;
 
 import java.lang.reflect.Field;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class NotEmptyValidatorTest {
     private Person goodPerson;
@@ -30,8 +30,8 @@ public class NotEmptyValidatorTest {
 
     @Test
     public void isValid() throws IllegalAccessException {
-        assertEquals(false, validator.isValid(firstNameField));
+        assertFalse(validator.isValid(firstNameField));
         validator = new NotEmptyValidator(goodPerson);
-        assertEquals(true, validator.isValid(lastNameField));
+        assertTrue(validator.isValid(lastNameField));
     }
 }
